@@ -1,2 +1,2 @@
-# Array-job (Xinran)
-Example of Slurm Arrayjob for Xinran's workload
+# Array-job Example
+Example of Slurm Arrayjob example for python functions
