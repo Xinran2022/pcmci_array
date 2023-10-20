@@ -8,12 +8,14 @@ indices=$(cut -d, -f1 parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
 
 # The indices list is then consumed by the slurm --array argument,
 # which for every task, gets into a Slurm Array Task ID
+# The --time flag, is max time per task (default below 3h to get higher priority)
 
 #SBATCH --job-name=ja_ex
 #SBATCH --output=out_%j.txt
 #SBATCH --error=err_%j.txt
 #SBATCH --array=${indices}
-#SBATCH --time=01:00:00
+#SBATCH --time=02:59:00
+#SBATCH --account=def-ggalex
 
 # Load python 3.11.5 (please customize given your workload - perhaps with a python venv)
 module load StdEnv/2023 python/3.11.5
