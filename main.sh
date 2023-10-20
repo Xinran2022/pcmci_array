@@ -14,8 +14,10 @@ indices=$(cut -d, -f1 parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
 #SBATCH --output=out_%j.txt
 #SBATCH --error=err_%j.txt
 #SBATCH --array=${indices}
-#SBATCH --time=02:59:00
+#SBATCH --time=00:30:00
 #SBATCH --account=def-ggalex
+#SBATCH --mem-per-cpu=2G   # 2 GB of memory per CPU
+#SBATCH --cpus-per-task=4  # 4 CPUs per task
 
 # Load python 3.11.5 (please customize given your workload - perhaps with a python venv)
 module load StdEnv/2023 python/3.11.5
