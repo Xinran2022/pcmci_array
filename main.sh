@@ -25,10 +25,14 @@ module load StdEnv/2023 python/3.11.5
 # Fetch the corresponding csv line based on the index value
 IFS=, read -a line < <(awk -v var=$SLURM_ARRAY_TASK_ID -F, '$1==var {print $0}' parameters.csv)
 
+# Debugging
+echo "Index: $index, Temperature: $temperature, Category: $category" >> debug.txt
+
+
 # Extracting parameters (columns are the parameters)
 index=${line[0]}
 temperature=${line[1]}
 category=${line[2]}
 
 # Running the python script with the extracted parameters
-python main.py --index $index --temperature $temperature --category $category
+python main.py --index "$index" --temperature "$temperature" --category "$category"
