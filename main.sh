@@ -3,8 +3,11 @@
 # Example of Slurm job array, adapted from The Alliance documentation (https://docs.alliancecan.ca/wiki/Job_arrays).
 # Every task is self-contained (not depending on other tasks). Be careful to environment setup.
 
-# Generate a comma-separated list of indices from the CSV file index column
-indices=$(cut -d, -f1 parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
+# Set the csv header size (1 contains only a first line, often containing column titles)
+header_offset=1
+
+# Increment each index value by header_offset to account for the header line in the CSV file
+indices=$(awk -v offset=$header_offset -F, 'NR > 1 {print $1 + offset}' parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
 
 # The indices list is then consumed by the slurm --array argument,
 # which for every task, gets into a Slurm Array Task ID
@@ -22,11 +25,8 @@ indices=$(cut -d, -f1 parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
 # Load python 3.11.5 (please customize given your workload - perhaps with a python venv)
 module load StdEnv/2023 python/3.11.5
 
-# Adjusting SLURM_ARRAY_TASK_ID to account for the header line (the integer is amount of lines to skip)
-adjusted_task_id=$((SLURM_ARRAY_TASK_ID + 1))
-
 # Extracting parameters using sed and awk
-line=$(sed -n "${adjusted_task_id}p" parameters.csv)
+line=$(sed -n "${SLURM_ARRAY_TASK_ID}p" parameters.csv)
 index=$(echo $line | awk -F, '{print $1}')
 temperature=$(echo $line | awk -F, '{print $2}')
 category=$(echo $line | awk -F, '{print $3}')
