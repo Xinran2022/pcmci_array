@@ -22,8 +22,11 @@ indices=$(cut -d, -f1 parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
 # Load python 3.11.5 (please customize given your workload - perhaps with a python venv)
 module load StdEnv/2023 python/3.11.5
 
+# Adjusting SLURM_ARRAY_TASK_ID to account for the header line (the integer is amount of lines to skip)
+adjusted_task_id=$((SLURM_ARRAY_TASK_ID + 1))
+
 # Extracting parameters using sed and awk
-line=$(sed -n "${SLURM_ARRAY_TASK_ID}p" parameters.csv)
+line=$(sed -n "${adjusted_task_id}p" parameters.csv)
 index=$(echo $line | awk -F, '{print $1}')
 temperature=$(echo $line | awk -F, '{print $2}')
 category=$(echo $line | awk -F, '{print $3}')
