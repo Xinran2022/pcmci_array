@@ -27,8 +27,10 @@ echo "$indices" >> indices.txt
 # Load python 3.11.5 (please customize given your workload - perhaps with a python venv)
 module load StdEnv/2023 python/3.11.5
 
+echo "This task ID#: $SLURM_ARRAY_TASK_ID"
+
 # Adjust SLURM_ARRAY_TASK_ID to account for the header line
-adjusted_task_id=$((SLURM_ARRAY_TASK_ID))
+adjusted_task_id=$SLURM_ARRAY_TASK_ID
 
 # Extracting parameters using sed and awk
 line=$(sed -n "${adjusted_task_id}p" parameters.csv)
