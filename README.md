@@ -1,2 +1,2 @@
-# array_job_xinran
+# Array-job (Xinran)
 Example of Slurm Arrayjob for Xinran's workload
