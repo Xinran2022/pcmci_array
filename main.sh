@@ -28,7 +28,7 @@ echo "$indices" >> indices.txt
 module load StdEnv/2023 python/3.11.5
 
 # Adjust SLURM_ARRAY_TASK_ID to account for the header line
-adjusted_task_id=$((SLURM_ARRAY_TASK_ID + header_offset))
+adjusted_task_id=$((SLURM_ARRAY_TASK_ID))
 
 # Extracting parameters using sed and awk
 line=$(sed -n "${adjusted_task_id}p" parameters.csv)
