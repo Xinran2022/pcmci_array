@@ -22,28 +22,14 @@ indices=$(cut -d, -f1 parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
 # Load python 3.11.5 (please customize given your workload - perhaps with a python venv)
 module load StdEnv/2023 python/3.11.5
 
-# Define a function to parse the CSV line
-parse_csv_line() {
-    local csv_line=$1
-    IFS=, read -a line <<< "$csv_line"
-}
-
-# Search for the corresponding line based on the index value
-while IFS= read -r line; do
-    index=$(echo "$line" | cut -d, -f1)
-    if [[ $index -eq $SLURM_ARRAY_TASK_ID ]]; then
-        parse_csv_line "$line"
-        break
-    fi
-done < parameters.csv
+# Extracting parameters using sed and awk
+line=$(sed -n "${SLURM_ARRAY_TASK_ID}p" parameters.csv)
+index=$(echo $line | awk -F, '{print $1}')
+temperature=$(echo $line | awk -F, '{print $2}')
+category=$(echo $line | awk -F, '{print $3}')
 
 # Debugging echo
-echo "Debugging - Index: ${line[0]}, Temperature: ${line[1]}, Category: ${line[2]}" >> debug.txt
-
-# Extracting parameters (columns are the parameters)
-index=${line[0]}
-temperature=${line[1]}
-category=${line[2]}
+echo "Debugging - Index: $index, Temperature: $temperature, Category: $category" >> debug.txt
 
 # Running the python script with the extracted parameters
 python main.py --index "$index" --temperature "$temperature" --category "$category"
