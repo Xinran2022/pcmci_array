@@ -9,6 +9,8 @@ header_offset=1
 # Increment each index value by header_offset to account for the header line in the CSV file
 indices=$(awk -v offset=$header_offset -F, 'NR > 1 {print $1 + offset}' parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
 
+echo "$indices" >> indices.txt
+
 # The indices list is then consumed by the slurm --array argument,
 # which for every task, gets into a Slurm Array Task ID
 # The --time flag, is max time per task (default below 3h to get higher priority)
