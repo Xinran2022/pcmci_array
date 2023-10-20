@@ -23,9 +23,13 @@ indices=$(cut -d, -f1 parameters.csv | sort -n | tr '\n' ',' | sed 's/,$//')
 module load StdEnv/2023 python/3.11.5
 
 # Fetch the corresponding csv line based on the index value
-IFS=, read -a line <<< "$(awk -v var=$SLURM_ARRAY_TASK_ID -F, '$1==var {print $0}' parameters.csv)"
+csv_line=$(awk -v var=$SLURM_ARRAY_TASK_ID -F, '$1==var {print $0}' parameters.csv)
 
-echo "Debugging - Index: $index, Temperature: $temperature, Category: $category" >> debug.txt
+# Read the csv line into an array
+IFS=, read -a line <<< "$csv_line"
+
+# Debugging echo
+echo "Debugging - Index: ${line[0]}, Temperature: ${line[1]}, Category: ${line[2]}" >> debug.txt
 
 # Extracting parameters (columns are the parameters)
 index=${line[0]}
