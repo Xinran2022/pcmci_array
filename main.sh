@@ -10,11 +10,11 @@
 #SBATCH --job-name=ja_ex
 #SBATCH --output=./slurm_runs/%j-%u-%x-%N.out
 #SBATCH --error=./slurm_runs/%j-%u-%x-%N.err
-#SBATCH --array=2-1000
-#SBATCH --time=00:30:00
-#SBATCH --account=def-ggalex
-#SBATCH --mem-per-cpu=2G   # 2 GB of memory per CPU
-#SBATCH --cpus-per-task=4  # 4 CPUs per task
+#SBATCH --array=1-1597612
+#SBATCH --time=00:15:00
+#SBATCH --account=rrg-ggalex
+#SBATCH --mem-per-cpu=100G   # 2 GB of memory per CPU
+#SBATCH --cpus-per-task=44  # 4 CPUs per task
 #SBATCH --mail-user=barroslr@mcmaster.ca
 #SBATCH --mail-type=ALL
 
