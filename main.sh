@@ -28,10 +28,14 @@ module load StdEnv/2023 python/3.11.5
 adjusted_task_id=$((SLURM_ARRAY_TASK_ID + header_offset))
 
 # Extracting parameters using sed and awk
-line=$(sed -n "${adjusted_task_id}p" parameters.csv)
+line=$(sed -n "${adjusted_task_id}p" hl.csv)
 index=$(echo $line | awk -F, '{print $1}')
-temperature=$(echo $line | awk -F, '{print $2}')
-category=$(echo $line | awk -F, '{print $3}')
+row=$(echo $line | awk -F, '{print $2}')
+col=$(echo $line | awk -F, '{print $3}')
+sm=$(echo $line | awk -F, '{print $4}')
+evi=$(echo $line | awk -F, '{print $5}')
+var_names0=$(echo $line | awk -F, '{print $6}')
+var_names1=$(echo $line | awk -F, '{print $7}')
 
 # Running the python script with the extracted parameters
-python main.py --index "$index" --temperature "$temperature" --category "$category"
+python main.py --index "$index" --row "$row" --col "$col" --sm "$sm" --evi "$evi" --var_names0 "$var_names0" --var_names1 "$var_names1"
