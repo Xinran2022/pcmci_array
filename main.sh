@@ -15,7 +15,7 @@
 #SBATCH --account=rrg-ggalex
 #SBATCH --mem-per-cpu=100G   # 2 GB of memory per CPU
 #SBATCH --cpus-per-task=44  # 4 CPUs per task
-#SBATCH --mail-user=barroslr@mcmaster.ca
+#SBATCH --mail-user=gaox67@mcmaster.ca
 #SBATCH --mail-type=ALL
 
 # Set the csv header size (1 contains only a first line, often containing column titles)
