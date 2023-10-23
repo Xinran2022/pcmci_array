@@ -94,7 +94,7 @@ def total_effect(dgraph, dataframe, X, Y, mask_type=None):
 
     return pred_Y[1]-pred_Y[0], conf[0,1]-conf[0,0], conf[1,1]-conf[1,0]
 
-def causal_diseff(ti_path,evi_path,var_names0,var_names1,row,col,index): #(args.sm,args.evi,args.var_names0,args.car_names1,row,col)
+def causal_diseff(index,row,col,ti_path,evi_path,var_names0,var_names1): #(args.sm,args.evi,args.var_names0,args.car_names1,row,col)
     warnings.resetwarnings()
     warnings.simplefilter('ignore')
     #row, col = hl[0], hl[1]
@@ -168,22 +168,30 @@ def causal_diseff(ti_path,evi_path,var_names0,var_names1,row,col,index): #(args.
             s_lag, s_ce, sconf_0, sconf_1 = -9999,-9999,-9999,-9999
     return index, row, col, s_lag, s_ce, sconf_0, sconf_1
 
+def loop_across_parameters(begin_idx, end_index):
+    df = pd.read_csv('hl.csv')
+
+    columns = ['index', 'row', 'col', 's_lag', 's_ce','sconf_0','sconf_1']
+    output_df = pd.DataFrame(columns=columns)
+
+    for line in range(begin_idx+1, end_index):
+        buffer_line = df.loc[df['index'] == line]
+        results = causal_diseff(buffer_line.to_list())
+        output_df = output_df.append(pd.DataFrame(results, columns=columns))
+    return output_df
 
 if __name__ == '__main__':
     start_time = time.time()
     # Set parser for arguments submitted to main.py (with data types enforced)
     parser = argparse.ArgumentParser(description='Process input parsed from hl.csv')
     parser.add_argument('--index', type=int, required=True)
-    parser.add_argument('--row', type=int, required=True)
-    parser.add_argument('--col', type=int, required=True)
-    parser.add_argument('--sm', type=str, required=True)
-    parser.add_argument('--evi', type=str, required=True)
-    parser.add_argument('--var_names0', type=str, required=True)
-    parser.add_argument('--var_names1', type=str, required=True)
+    parser.add_argument('--begin_idx', type=int, required=True)
+    parser.add_argument('--end_idx', type=int, required=True)
 
     args = parser.parse_args()
     #main(args.index, args.temperature, args.category)
-    output = pd.DataFrame(causal_diseff(args.sm,args.evi,args.var_names0,args.car_names1,args.row,args.col,args.index))
+    #output = pd.DataFrame(causal_diseff(args.index, args.row,args.col,args.sm,args.evi,args.var_names0,args.var_names1))
+    output = loop_across_parameters(begin_idx=args.begin_idx, end_index=args.end_idx)
     output.to_csv(str('/home/xinran22/scratch/SIF_SM/'+'index_'+args.index+'.csv'))
     end_time = time.time()
     elapsed_time = end_time - start_time
