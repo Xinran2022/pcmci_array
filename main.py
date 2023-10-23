@@ -22,6 +22,7 @@ import warnings
 from joblib import Parallel, delayed
 import pandas as pd
 import argparse
+import time
 
 def path_effect(graph, dataframe, X, Y, mediation=None,mask_type=None):
     causal_effects = CausalEffects(graph, graph_type='stationary_dag', 
@@ -169,6 +170,7 @@ def causal_diseff(ti_path,evi_path,var_names0,var_names1,row,col,index): #(args.
 
 
 if __name__ == '__main__':
+    start_time = time.time()
     # Set parser for arguments submitted to main.py (with data types enforced)
     parser = argparse.ArgumentParser(description='Process input parsed from hl.csv')
     parser.add_argument('--index', type=int, required=True)
@@ -183,3 +185,8 @@ if __name__ == '__main__':
     #main(args.index, args.temperature, args.category)
     output = pd.DataFrame(causal_diseff(args.sm,args.evi,args.var_names0,args.car_names1,args.row,args.col,args.index))
     output.to_csv(str('/home/xinran22/scratch/SIF_SM/'+'index_'+args.index+'.csv'))
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    # Print the elapsed time
+    print(f"Elapsed time: {elapsed_time} seconds")
+    
