@@ -34,14 +34,10 @@ source /home/xinran22/projects/rrg-ggalex/shared/python_venvs/xinran_pcmci_2023-
 adjusted_task_id=$((SLURM_ARRAY_TASK_ID + header_offset))
 
 # Extracting parameters using sed and awk
-line=$(sed -n "${adjusted_task_id}p" hl.csv)
+line=$(sed -n "${adjusted_task_id}p" hl_search.csv)
 index=$(echo $line | awk -F, '{print $1}')
-row=$(echo $line | awk -F, '{print $2}')
-col=$(echo $line | awk -F, '{print $3}')
-sm=$(echo $line | awk -F, '{print $4}')
-evi=$(echo $line | awk -F, '{print $5}')
-var_names0=$(echo $line | awk -F, '{print $6}')
-var_names1=$(echo $line | awk -F, '{print $7}')
+begin_idx=$(echo $line | awk -F, '{print $2}')
+end_idx=$(echo $line | awk -F, '{print $3}')
 
 # Running the python script with the extracted parameters
-python main.py --index "$index" --row "$row" --col "$col" --sm "$sm" --evi "$evi" --var_names0 "$var_names0" --var_names1 "$var_names1"
+python main.py --index "$index" --begin_idx "$begin_idx" --end_idx "$end_idx"
