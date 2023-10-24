@@ -1,0 +1,11 @@
+gdal
+jupyterlab
+scikit-learn
+numpy
+scipy
+numba
+six
+matplotlib
+seaborn
+networkx
+tigramite
