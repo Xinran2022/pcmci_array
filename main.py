@@ -176,7 +176,7 @@ def loop_across_parameters(begin_idx, end_index):
 
     for line in range(begin_idx+1, end_index):
         buffer_line = df.loc[df['index'] == line]
-        results = causal_diseff(buffer_line.tolist())
+        results = causal_diseff(buffer_line.values.tolist())
         output_df = output_df.append(pd.DataFrame(results, columns=columns))
     return output_df
 
