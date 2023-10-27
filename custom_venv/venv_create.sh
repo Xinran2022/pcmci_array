@@ -8,7 +8,7 @@
 
 # Sets the parameters for the virtualenv creation
 VIRTUALENV_BASE_FOLDER=/home/lourenco/projects/rrg-ggalex/lourenco/python_venvs/
-NEW_VIRTUALENV_NAME=xinran_pcmci_2023-10-23
+NEW_VIRTUALENV_NAME=xinran_pcmci_2023-10-23-fixed
 
 # Force environment cleanup
 module --force purge
@@ -25,10 +25,10 @@ ACTIVATEENV="$COMBINEDPATH/bin/activate"
 source ACTIVATEENV
 
 # Upgrade pip (as it is using AllianceCan binaries, and may be old)
-pip install --upgrade pip
+pip install --no-index --force-reinstall --upgrade pip
 
 # Install python libraries from list
-pip install -r ./requirements.txt
+pip install --no-index --force-reinstall -r ./requirements.txt
 
 # Deactivate environment
 deactivate
