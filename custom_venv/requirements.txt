@@ -1,11 +1,10 @@
-gdal
+numpy<1.24,>=1.18
+scipy>=1.10.0
+numba==0.56.4
 jupyterlab
 scikit-learn
-numpy
-scipy
-numba
 six
 matplotlib
 seaborn
 networkx
-tigramite
+tigramite==5.2.3.1
