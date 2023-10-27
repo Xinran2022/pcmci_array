@@ -2,7 +2,7 @@
 """
 Created on Mon Oct 23 15:04:58 2023
 
-@author: user
+@author: Xinran22, lourenco
 """
 
 import os
@@ -173,15 +173,17 @@ def causal_diseff(index, row, col, ti_path, evi_path, var_names0,
 
 
 def loop_across_parameters(begin_idx, end_index):
-    df = pd.read_csv('hl.csv')
+    df = pd.read_csv('hlhl.csv')
 
     columns = ['index', 'row', 'col', 's_lag', 's_ce', 'sconf_0', 'sconf_1']
     output_df = pd.DataFrame(columns=columns)
+    print("Generated output_df:"+str(output_df))
 
     for line in range(begin_idx + 1, end_index):
         buffer_line = df.loc[df['index'] == line]
-        results = causal_diseff(*buffer_line.values.tolist()[0])
-        output_df = output_df.append(pd.DataFrame(results, columns=columns))
+        index, row, col, s_lag, s_ce, sconf_0, sconf_1 = causal_diseff(*buffer_line.values.tolist()[0])
+        new_df = {'index':index, 'row':row, 'col':col, 's_lag':s_lag, 's_ce':s_ce, 'sconf_0':sconf_0, 'sconf_1':sconf_1}
+        output_df = output_df.append(new_df,ignore_index=True)
     return output_df
 
 
@@ -197,7 +199,7 @@ if __name__ == '__main__':
     # main(args.index, args.temperature, args.category)
     # output = pd.DataFrame(causal_diseff(args.index, args.row,args.col,args.sm,args.evi,args.var_names0,args.var_names1))
     output = loop_across_parameters(begin_idx=args.begin_idx, end_index=args.end_idx)
-    output.to_csv(str('/home/xinran22/scratch/SIF_SM/' + 'index_' + args.index + '.csv'))
+    output.to_csv(str('./SIF_SM/' + 'index_' + args.index + '.csv'))
     end_time = time.time()
     elapsed_time = end_time - start_time
     # Print the elapsed time
