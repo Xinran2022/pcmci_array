@@ -2,7 +2,7 @@
 """
 Created on Mon Oct 23 15:04:58 2023
 
-@author: Xinran22, lourenco
+@author: Xinran22, Lourenco, Wen
 """
 
 import os
@@ -173,7 +173,7 @@ def causal_diseff(index, row, col, ti_path, evi_path, var_names0,
 
 
 def loop_across_parameters(begin_idx, end_index):
-    df = pd.read_csv('hlhl.csv')
+    df = pd.read_csv('hl.csv')
 
     columns = ['index', 'row', 'col', 's_lag', 's_ce', 'sconf_0', 'sconf_1']
     output_df = pd.DataFrame(columns=columns)
@@ -183,7 +183,9 @@ def loop_across_parameters(begin_idx, end_index):
         buffer_line = df.loc[df['index'] == line]
         index, row, col, s_lag, s_ce, sconf_0, sconf_1 = causal_diseff(*buffer_line.values.tolist()[0])
         new_df = {'index':index, 'row':row, 'col':col, 's_lag':s_lag, 's_ce':s_ce, 'sconf_0':sconf_0, 'sconf_1':sconf_1}
-        output_df = output_df.append(new_df,ignore_index=True)
+        print("New df type : "+str(type(new_df)))
+       
+        output_df = pd.concat([output_df,pd.DataFrame([new_df])],ignore_index=True)
     return output_df
 
 
