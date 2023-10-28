@@ -11,10 +11,10 @@
 #SBATCH --output=./slurm_runs/%j-%u-%x-%N.out
 #SBATCH --error=./slurm_runs/%j-%u-%x-%N.err
 #SBATCH --array=1-888
-#SBATCH --time=08:00:00
+#SBATCH --time=8:00:00
 #SBATCH --account=rrg-ggalex
 #SBATCH --mem-per-cpu=3G   # 2 GB of memory per CPU
-#SBATCH --cpus-per-task=44  # 4 CPUs per task
+#SBATCH --cpus-per-task=32  # 4 CPUs per task
 #SBATCH --mail-user=gaox67@mcmaster.ca
 #SBATCH --mail-type=ALL
 
@@ -28,7 +28,7 @@ module --force purge
 module load StdEnv/2020 gcc/9.3.0 gdal/3.5.1 python/3.10.2
 
 # Load pre-built python virtualenv
-source /home/xinran22/projects/rrg-ggalex/shared/python_venvs/xinran_pcmci_2023-10-23/bin/activate
+source ./xinran_pcmci_2023-10-27/bin/activate
 
 # Adjust SLURM_ARRAY_TASK_ID to account for the header line
 adjusted_task_id=$((SLURM_ARRAY_TASK_ID + header_offset))
